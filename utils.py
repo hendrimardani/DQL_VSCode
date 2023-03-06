@@ -104,23 +104,17 @@ def quatromatrix(action_values, ax=None, triplotkw=None, tripcolorkw=None):
 
 
 def test_agent(env: gym.Env, policy: Callable, episodes: int = 10) -> None:
-    plt.figure(figsize=(8, 8))
-    for episode in range(episodes):
-        state = env.reset()
+    for _ in range(episodes):
         done = False
-        img = plt.imshow(env.render(mode='rgb_array'))
         while not done:
-            p = policy(state)
-            if isinstance(p, np.ndarray):
-                action = np.random.choice(4, p=p)
-            else:
-                action = p
-            next_state, _, done, _ = env.step(action)
-            img.set_data(env.render(mode='rgb_array'))
-            plt.axis('off')
-            display.display(plt.gcf())
-            display.clear_output(wait=True)
-            state = next_state
+            p = policy(env.reset())
+        if isinstance(p, np.ndarray):
+            action = np.random.choice(4, p=p)
+        else:
+            action = p
+        next_state, _, done, _ = env.step(action)
+        plt.imshow(env.render("human")) 
+        state = next_state
 
 
 def plot_cost_to_go(env, q_network, xlabel=None, ylabel=None):
