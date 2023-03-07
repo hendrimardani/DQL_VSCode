@@ -103,17 +103,22 @@ def quatromatrix(action_values, ax=None, triplotkw=None, tripcolorkw=None):
     return tripcolor
 
 
-def test_agent(env: gym.Env, policy: Callable, episodes: int = 10) -> None:
+def test_agent(env: gym.Env, state_r, policy: Callable, episodes: int = 10) -> None:
+    plt.figure(figsize=(8, 8))
     for _ in range(episodes):
+        state_ = state_r
         done = False
         while not done:
-            p = policy(env.reset())
+            p = policy(state_)
         if isinstance(p, np.ndarray):
             action = np.random.choice(4, p=p)
         else:
             action = p
         next_state, _, done, _ = env.step(action)
-        plt.imshow(env.render("human")) 
+        img = plt.imshow(env.render())
+        plt.axis('off')
+        display.display(plt.gcf())
+        display.clear_output(wait=True)
         state = next_state
 
 

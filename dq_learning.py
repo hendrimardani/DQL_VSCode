@@ -20,9 +20,12 @@ class Robot:
 
     @property
     def cobaan(self):
+        """
+            Menampilkan gambar laju mobil
+        """
         env = gym.make(self.env)
         env.reset()
-        tahan_layar = 100
+        tahan_layar = 1000
         actions_ran = env.action_space.sample()
 
         for _ in range(tahan_layar):
@@ -129,14 +132,11 @@ class OtakSaraf(ReplayMemory):
 
         return self.q_network, self.target_q_network
     
-    def policy(self):
-        state = self.env_r
-
+    def policy(self, state):
         if torch.rand(1) < self.epsilon:
             return torch.randint(self.num_actions, (1, 1))
         else:
             av = self.q_network(state).detach()
-
             return torch.argmax(av, dim=-1, keepdim=True)
         
     def saraf(self):
@@ -149,7 +149,7 @@ class OtakSaraf(ReplayMemory):
             ep_return = 0
 
             while not done:
-                action = self.policy()
+                action = self.policy(state)
                 next_state, reward, done, _ = self.prec_env.step(action)
                 self.insert([state, action, reward, done, next_state])
 
@@ -178,18 +178,3 @@ class OtakSaraf(ReplayMemory):
                 self.target_q_network.load_state_dict(self.q_network.state_dict())
 
         return stats
-
-nama_env = "MountainCar-v0"
-env = gym.make(nama_env)
-state_dims = env.observation_space.shape[0]
-num_actions = env.action_space.n
-
-robot = Robot(env=nama_env, epsilon=0.2, state_dims=state_dims, num_ations=num_actions)
-
-preEnv = PreprocessEnv(robot.env_r)
-
-otak = OtakSaraf(capacity=100000, episodes=1500, alpha=1e-3, env_r=preEnv.reset, 
-                 prec_env=preEnv, state_dims=state_dims, num_actions=num_actions)
-
-stats = otak.saraf()
-stats
