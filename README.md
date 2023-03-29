@@ -4,7 +4,4 @@ gym version 0.25.0
 numpy version 1.24.2
 
 
-![hahaha](https://im2.ezgif.com/tmp/ezgif-2-08e0fde5b8.gif)
-
-
-![wokowkow](https://im2.ezgif.com/tmp/ezgif-2-9a0fb50516.gif)
+![vokoscreenNG-2023-03-13_06-27-12](https://user-images.githubusercontent.com/49816104/228457721-3b3206af-0816-4cd2-b3c8-9d1b9c500ed9.gif)
